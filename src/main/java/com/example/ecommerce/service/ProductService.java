@@ -3,6 +3,7 @@ package com.example.ecommerce.service;
 import com.example.ecommerce.pojo.entity.Inventory;
 import com.example.ecommerce.pojo.entity.Product;
 import com.example.ecommerce.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,4 +33,8 @@ public class ProductService {
         // Save both the product and inventory
         return productRepository.save(product);
     }
+
+
+
+
 }

@@ -2,7 +2,9 @@ package com.example.ecommerce.api.controller.user;
 
 import com.example.ecommerce.pojo.entity.Address;
 import com.example.ecommerce.pojo.entity.LocalUser;
+import com.example.ecommerce.pojo.entity.WebOrder;
 import com.example.ecommerce.repository.AddressRepository;
+import com.example.ecommerce.repository.WebOrderRepository;
 import org.apache.coyote.Response;
 import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties;
 import org.springframework.http.HttpStatus;
@@ -18,9 +20,11 @@ import java.util.Optional;
 public class UserController {
 
 private AddressRepository addressRepository;
+private WebOrderRepository webOrderRepository;
 
-    public UserController(AddressRepository addressRepository) {
+    public UserController(AddressRepository addressRepository, WebOrderRepository webOrderRepository) {
         this.addressRepository = addressRepository;
+        this.webOrderRepository = webOrderRepository;
     }
 
     @GetMapping("/{userId}/address")
@@ -68,6 +72,29 @@ private AddressRepository addressRepository;
 
     }
 
+    @DeleteMapping("/{userId}/address/{addressId}")
+    public ResponseEntity<Void> deleteAddress(
+            @AuthenticationPrincipal LocalUser user, @PathVariable Long userId, @PathVariable Long addressId) {
+        if (!userHasPermission(user, userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        Optional<Address> addressOptional = addressRepository.findById(addressId);
+        if (addressOptional.isPresent()) {
+            Address address = addressOptional.get();
+            if (address.getUser().getId().equals(userId)) {
+                // Remove the address from associated web orders
+                List<WebOrder> webOrders = webOrderRepository.findByAddress(address);
+                webOrders.forEach(webOrder -> webOrder.setAddress(null));
+
+                // Delete the address
+                addressRepository.delete(address);
+                return ResponseEntity.noContent().build();
+            }
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 
 
 
