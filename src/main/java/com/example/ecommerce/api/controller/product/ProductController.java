@@ -3,9 +3,9 @@ package com.example.ecommerce.api.controller.product;
 import com.example.ecommerce.pojo.entity.Product;
 import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.service.ProductService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +24,13 @@ public class ProductController {
     public List<Product> getProducts()
     {
         return productService.getProducts();
+    }
+
+
+    @PostMapping
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        Product createdProduct = productService.createProduct(product);
+        return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 
 }

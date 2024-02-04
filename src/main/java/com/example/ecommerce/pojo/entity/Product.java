@@ -36,7 +36,7 @@ public class Product {
     private Double price;
     /** The inventory of the product. */
 
-    @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, optional = false, orphanRemoval = true)
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
     private Inventory inventory;
 
     /**
@@ -53,6 +53,9 @@ public class Product {
      */
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+        if (inventory != null) {
+            inventory.setProduct(this);
+        }
     }
 
     /**
