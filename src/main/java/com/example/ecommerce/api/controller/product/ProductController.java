@@ -1,5 +1,6 @@
 package com.example.ecommerce.api.controller.product;
 
+import com.example.ecommerce.api.model.ProductRequest;
 import com.example.ecommerce.pojo.entity.Product;
 import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.service.ProductService;
@@ -28,8 +29,8 @@ public class ProductController {
 
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product createdProduct = productService.createProduct(product);
+    public ResponseEntity<Product> createProduct(@RequestBody ProductRequest productRequest) {
+        Product createdProduct = productService.createProduct(productRequest.getProduct(), productRequest.getQuantity());
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 

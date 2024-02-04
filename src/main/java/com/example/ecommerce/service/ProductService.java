@@ -20,11 +20,11 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product createProduct(Product product) {
+    public Product createProduct(Product product,Integer quantity) {
         // Create a new inventory for the product
         Inventory inventory = new Inventory();
         // Set the quantity for the inventory (you can set it based on your requirements)
-        inventory.setQuantity(10);
+        inventory.setQuantity(quantity);
 
         // Associate the product with the inventory
         product.setInventory(inventory);
