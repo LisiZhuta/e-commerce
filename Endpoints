@@ -1,0 +1,13 @@
+http://localhost:8081/auth/register - Post
+http://localhost:8081/auth/login - Post
+http://localhost:8081/auth/me -Get
+http://localhost:8081/order -Get
+http://localhost:8081/user/11/address -Get
+http://localhost:8081/user/11/address/3 -Patch
+http://localhost:8081/user/11/address -Put
+http://localhost:8081/product -Get
+http://localhost:8081/product - Post
+http://localhost:8081/order/11/order -Post
+http://localhost:8081/user/11/address/27 -Delete
+http://localhost:8081/order/11/order/27 -Delete
+note that for some of the endpoints you will need to provide jsonbody based on the function executed.

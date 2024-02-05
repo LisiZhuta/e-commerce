@@ -56,7 +56,8 @@ public class OrderController {
             webOrder.setUser(refUser);
             webOrder.setAddress(address);
 
-            //need to also set the order quantities to get the product info (?)
+            //need to set the order quantities to get the product,inventory and quantity info ?????
+
             // Save the webOrder with the existing address
             WebOrder savedOrder = webOrderRepository.save(webOrder);
 
