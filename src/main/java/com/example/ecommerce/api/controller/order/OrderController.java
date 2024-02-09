@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -38,16 +39,16 @@ public class OrderController {
         return orderService.getOrders(user);
     }
 
-    @PostMapping("{userId}/order")
+    @PostMapping("{userId}/order/{productId}")
     public ResponseEntity<WebOrder> putOrder(
-            @AuthenticationPrincipal LocalUser user, @PathVariable Long userId, @RequestBody WebOrder webOrder) {
+            @AuthenticationPrincipal LocalUser user, @PathVariable Long userId, @RequestBody WebOrder webOrder,@PathVariable Long productId) {
         if (!userHasPermission(user, userId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         // Assuming the addressId and quantities are provided in the JSON request
         Long addressId = webOrder.getAddress().getId();
-        Optional<Product> productId=productRepository.findById(2L);
+
         List<WebOrderQuantities> quantities = webOrder.getQuantities(); // Assuming you have a method to retrieve quantities
 
         // Fetch the existing address from the database
@@ -67,7 +68,7 @@ public class OrderController {
             // Iterate through the provided quantities
             for (WebOrderQuantities quantity : quantities) {
                 WebOrderQuantities newquantity= new WebOrderQuantities();
-                Optional<Product> existingProduct = productRepository.findById(3L);
+                Optional<Product> existingProduct = productRepository.findById(productId);
                 if (existingProduct.isPresent()) {
                     // Set the order and product for the quantity
                     newquantity.setOrder(webOrder);
